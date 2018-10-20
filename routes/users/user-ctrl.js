@@ -1,7 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var User = require('./user-model');
-var bcrypt = require('bcryptjs');
+const express = require('express');
+const router = express.Router();
+const User = require('./user-model');
+const bcrypt = require('bcryptjs');
+const VerifyToken = require('../auth/VerifyToken');
 
 // CREATES A NEW USER
 router.post('/', (req, res) => {
@@ -17,7 +18,7 @@ router.post('/', (req, res) => {
             
             User.create(req.body, (err, user) => {
                 if (err) return res.status(500).send({status: "failure", reason: "There was a problem adding the information to the database."});
-                res.status(200).send({ status: 'success', apiKey: token });
+                res.status(200).send({ status: 'success', apiKey: token, user_id: user._id });
             });
         }
     });
