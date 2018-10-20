@@ -12,11 +12,11 @@ var jsonParser = bodyParser.json()
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 /* GET home page. */
-// router.get('/upload', function(req, res, next) {
-//   res.render('index', { title: 'Express' });
-// });
+router.get('/upload/:id', function(req, res, next) {
+  res.render('index', { title: 'Express' });
+});
 
-// POST /login gets urlencoded bodies
+// POST /upload gets urlencoded bodies
 app.post('/upload', urlencodedParser, function (req, res) {
     if (!req.body) return res.sendStatus(400)
 
