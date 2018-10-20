@@ -7,14 +7,25 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+const mongoose = require('mongoose');
+// const bodyParser = require('body-parser');
+
+mongoose.connect('mongodb://localhost/farmwit', { useMongoClient: true });
+// mongoose.connect('mongodb://abubakr:flo007@ds131963.mlab.com:31963/flo', { useMongoClient: true });
+
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({extended: true}));
+app.use(cors()); // enable cross-origin resource sharing
+
 app.use(logger('dev'));
 app.use(express.json());
+// create application/x-www-form-urlencoded parser
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));

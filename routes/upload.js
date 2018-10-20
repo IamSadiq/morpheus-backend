@@ -3,13 +3,13 @@ var formidable = require('formidable');
 var fs = require('fs');
 var express = require('express');
 var router = express.Router();
-var bodyParser = require('body-parser');
+// var bodyParser = require('body-parser');
 
 // create application/json parser
-var jsonParser = bodyParser.json()
+// var jsonParser = bodyParser.json();
  
 // create application/x-www-form-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+// var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 /* GET home page. */
 router.get('/upload/:id', function(req, res, next) {
