@@ -1,0 +1,79 @@
+createfieldRequestEndpoint
+{
+"farmfield": {
+"fieldName": "",
+"plantName": "",
+"area": "",
+"location": {
+"longitude": "",
+"latitude": "",
+"country": "",
+"city": ""
+},
+"operations": {
+"landPreparation": {
+"tasks": [
+{
+"taskDescipriton": "",
+"startDate": "",
+"endDate": "",
+"status": "",
+"budget": ""
+}
+]
+},
+"planting": {
+"tasks": [
+{
+"taskDescipriton": "",
+"startDate": "",
+"endDate": "",
+"status": "",
+"budget": ""
+}
+]
+},
+"maintenance": {
+"tasks": [
+{
+"taskDescipriton": "",
+"startDate": "",
+"endDate": "",
+"status": "",
+"budget": ""
+}
+]
+},
+"fertilizing": {
+"tasks": [
+{
+"taskDescipriton": "",
+"startDate": "",
+"endDate": "",
+"status": "",
+"budget": ""
+}
+]
+},
+"Harvesting": {
+"tasks": [
+{
+"taskDescipriton": "",
+"startDate": "",
+"endDate": "",
+"status": "",
+"budget": ""
+}
+]
+},
+"storage": {
+"tasks": [
+{
+"taskDescipriton": "",
+"startDate": "",
+"endDate": "",
+"status": "",
+"budget": ""
+}
+]
+}
