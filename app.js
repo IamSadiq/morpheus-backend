@@ -4,11 +4,10 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
 const mongoose = require('mongoose');
 // const bodyParser = require('body-parser');
+
+var indexRouter = require('./routes/index');
 
 mongoose.connect('mongodb://localhost/farmwit', { useMongoClient: true });
 // mongoose.connect('mongodb://abubakr:flo007@ds131963.mlab.com:31963/flo', { useMongoClient: true });
