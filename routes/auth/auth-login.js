@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../users/user-model');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 
 router.post('/login', (req, res) => {
     User.find({email: req.body.password}, (err, user) => {
