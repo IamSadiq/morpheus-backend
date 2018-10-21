@@ -12,7 +12,7 @@ const FieldSchema = new Schema({
             ref: 'Tasks'
         }
     ],
-    plantName: String,
+    cropName: String,
     fieldSize: Number,
     location: {
         longitude: Number,
