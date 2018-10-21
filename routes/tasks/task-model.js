@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
-const TaskSchema = new mongoose.Schema({
+const Schema = mongoose.Schema;
+
+const TaskSchema = new Schema({
     fieldId: {
         type: Schema.Types.ObjectId,
         ref: 'Fields'

@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
-const FieldSchema = new mongoose.Schema({
+const Schema = mongoose.Schema;
+
+const FieldSchema = new Schema({
     uid: {
         type: Schema.Types.ObjectId,
         ref: 'User'
