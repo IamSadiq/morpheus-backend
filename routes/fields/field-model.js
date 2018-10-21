@@ -6,6 +6,12 @@ const FieldSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
+    tasks: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Tasks'
+        }
+    ],
     plantName: String,
     fieldSize: Number,
     location: {
@@ -14,7 +20,8 @@ const FieldSchema = new Schema({
         country: { type: String, default: 'Nigeria' },
         state: String,
         town: String
-    }
+    },
+    totalBudget: String
 });
 
-module.exports = mongoose.model('Field', FieldSchema);
+module.exports = mongoose.model('Fields', FieldSchema);

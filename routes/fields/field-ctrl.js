@@ -8,7 +8,6 @@ const VerifyToken = require('../auth/VerifyToken');
 router.post('/', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err) => {
         if(err) return res.json({status: "failure", message: "Failed to authenticate."});
-        if (!user) return res.status(404).send({status: "failure", message: "No such user found."});
 
         Field.create(req.body, (err, response)=>{
             if(err) return res.json({status: "failure"});
@@ -21,7 +20,6 @@ router.post('/', VerifyToken, (req, res) => {
 router.get('/', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => {
         if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the users."});
-        if (!user) return res.status(404).send({status: "failure", message: "No users found."});
 
         Field.find({fieldId: req.body.fieldId}, (err, fields) => {
             if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the fields."});
@@ -35,7 +33,6 @@ router.get('/', VerifyToken, (req, res) => {
 router.get('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the user."});
-        if (!user) return res.status(404).send({status: "failure", message: "No user found."});
 
         Field.findById(req.params.id, (err, field) => {
             if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the field."});
@@ -49,7 +46,6 @@ router.get('/:id', VerifyToken, (req, res) => {
 router.put('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, sessUser) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the users."});
-        if (!sessUser) return res.status(500).send({status: "failure", message: "No user exist."});
 
         Field.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, field) {
             if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the field."});
@@ -63,7 +59,6 @@ router.put('/:id', VerifyToken, (req, res) => {
 router.delete('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the user."});
-        if (!user) return res.status(404).send({status: "failure", message: "No user found."});
 
         Field.findByIdAndRemove(req.params.id, (err, field) => {
             if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the field."});

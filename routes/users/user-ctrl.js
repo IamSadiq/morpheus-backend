@@ -29,7 +29,6 @@ router.post('/', (req, res) => {
 router.get('/', VerifyToken, (req, res) => {
     User.findById(req.userId, {password: 0, apiKey: 0}, (err, user) => {
         if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the users."});
-        if (!user) return res.status(404).send({status: "failure", reason: "No users found."});
 
         User.find({}, {password: 0}, (err, users) => {
             if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the users."});
@@ -42,7 +41,6 @@ router.get('/', VerifyToken, (req, res) => {
 router.get('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the user."});
-        if (!user) return res.status(404).send({status: "failure", reason: "No user found."});
 
         User.findById(req.params.id, (err, user) => {
             if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the user."});
@@ -56,7 +54,6 @@ router.get('/:id', VerifyToken, (req, res) => {
 router.delete('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the user."});
-        if (!user) return res.status(404).send({status: "failure", reason: "No user found."});
 
         User.findByIdAndRemove(req.params.id, (err, user) => {
             if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the user."});
@@ -72,7 +69,6 @@ router.put('/:id', VerifyToken, (req, res) => {
 
     User.findById(req.userId, { password: 0 }, (err, sessUser) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the users."});
-        if (!sessUser) return res.status(500).send({status: "failure", reason: "No user exist."});
 
         User.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, user) {
             if (err) return res.status(500).send("There was a problem updating the user.");

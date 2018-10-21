@@ -8,7 +8,6 @@ const VerifyToken = require('../auth/VerifyToken');
 router.post('/', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err) => {
         if(err) return res.json({status: "failure", reason: "Failed to authenticate."});
-        if (!user) return res.status(404).send({status: "failure", reason: "No such user found."});
 
         Task.create(req.body, (err, response)=>{
             if(err) return res.json({status: "failure"});
@@ -21,7 +20,6 @@ router.post('/', VerifyToken, (req, res) => {
 router.get('/', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => {
         if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the users."});
-        if (!user) return res.status(404).send({status: "failure", reason: "No users found."});
 
         Task.find({fieldId: req.body.fieldId}, (err, tasks) => {
             if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the tasks."});
@@ -35,7 +33,6 @@ router.get('/', VerifyToken, (req, res) => {
 router.get('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the user."});
-        if (!user) return res.status(404).send({status: "failure", reason: "No user found."});
 
         Task.findById(req.params.id, (err, task) => {
             if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the task."});
@@ -49,7 +46,6 @@ router.get('/:id', VerifyToken, (req, res) => {
 router.put('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, sessUser) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the users."});
-        if (!sessUser) return res.status(500).send({status: "failure", reason: "No user exist."});
 
         Task.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, task) {
             if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the task."});

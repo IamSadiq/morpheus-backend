@@ -8,9 +8,19 @@ const TaskSchema = new Schema({
     },
     taskDescipriton: String,
     status: { type: String, default: 'Pending' },
+    taskType: String,
     startDate: String,
     endDate: String,
-    budget: { type: Number, default: 0 }
+    taskBudget: { type: Number, default: 0 }
 });
 
-module.exports = mongoose.model('Task', TaskSchema);
+module.exports = mongoose.model('Tasks', TaskSchema);
+
+// taskType: {
+//     landPreparation
+//     planting
+//     maintenance
+//     fertilizing
+//     Harvesting
+//     storage
+// }
