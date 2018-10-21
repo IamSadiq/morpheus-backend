@@ -5,10 +5,10 @@ const TaskSchema = new mongoose.Schema({
         ref: 'Fields'
     },
     taskDescipriton: String,
-    status: String,
+    status: { type: String, default: 'Pending' },
     startDate: String,
     endDate: String,
-    budget: Number
+    budget: { type: Number, default: 0 }
 });
 
 module.exports = mongoose.model('Task', TaskSchema);
