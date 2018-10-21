@@ -9,6 +9,9 @@ const indexRouter = require('./routes/index');
 const loginAuth = require('./routes/auth/auth-login');
 const UserRouter = require('./routes/users/user-ctrl');
 
+const TaskRouter = require('./routes/tasks/task-ctrl');
+const FieldRouter = require('./routes/fields/field-ctrl');
+
 var app = express();
 
 mongoose.connect('mongodb://localhost/farmwit', { useMongoClient: true });
@@ -30,6 +33,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/auth', loginAuth);
 app.use('/users', UserRouter);
+
+app.use('/tasks', TaskRouter);
+app.use('/fields', FieldRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
