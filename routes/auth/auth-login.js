@@ -5,8 +5,8 @@ const bcrypt = require('bcrypt');
 
 router.post('/login', (req, res) => {
     User.find({email: req.body.password}, (err, user) => {
-        if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the users."});
-        if (!user) return res.status(500).send({status: "failure", reason: "No user found."});
+        if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the users."});
+        if (!user) return res.status(500).send({status: "failure", message: "No user found."});
 
         if(bcrypt.compare(req.body.password, user.password)) {
             // Passwords match
