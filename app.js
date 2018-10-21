@@ -16,7 +16,6 @@ const FieldRouter = require('./routes/fields/field-ctrl');
 var app = express();
 
 mongoose.connect('mongodb://localhost/farmwit', { useMongoClient: true, useNewUrlParser: true });
-// mongoose.connect('mongodb://abubakr:flo007@ds131963.mlab.com:31963/flo', { useMongoClient: true, useNewUrlParser: true });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
