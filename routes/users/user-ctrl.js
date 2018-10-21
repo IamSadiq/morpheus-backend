@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('./user-model');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const VerifyToken = require('../auth/VerifyToken');
 
 // CREATES A NEW USER
