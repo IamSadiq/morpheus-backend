@@ -1,4 +1,4 @@
-const User = require('./user-model');
+const User = require('../users/user-model');
 
 function verifyToken(req, res, next) {
     var token = req.params.apiKey;
