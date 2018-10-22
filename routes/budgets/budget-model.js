@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const IncomeSchema = new Schema({
+const BudgetSchema = new Schema({
     uid: {
         type: Schema.Types.ObjectId,
         ref: 'User'
@@ -13,4 +13,4 @@ const IncomeSchema = new Schema({
     amount: { type: Number, default: 0 }
 });
 
-module.exports = mongoose.model('Incomes', IncomeSchema);
+module.exports = mongoose.model('Budgets', BudgetSchema);
