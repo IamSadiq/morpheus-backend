@@ -26,7 +26,7 @@ router.post('/', VerifyToken, (req, res) => {
 
             Field.create(req.body, (err, field)=>{
                 if(err) return res.json({status: "failure", message: "Failed to create fields."});
-                return res.json({status: "success", fieldId: field._id, tasks: tasks});
+                return res.json({status: "success", field: field, tasks: tasks});
             });
         });
     });
