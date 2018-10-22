@@ -16,7 +16,7 @@ router.post('/', VerifyToken, (req, res) => {
             let fieldBudget = 0;
 
             tasks.forEach(elem => {
-                taskIds.push({taskId: task._id});
+                taskIds.push({taskId: elem._id});
                 fieldBudget += elem.budget;
             });
 
