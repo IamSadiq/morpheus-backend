@@ -23,6 +23,13 @@ router.post('/', VerifyToken, (req, res) => {
             req.body.uid = req.userId;
             req.body.tasks = taskIds;
             req.body.totalBudget = fieldBudget;
+            req.body.location = {
+                longitute: 6.987654,
+                latitude: 16.0654567,
+                country: req.body.country,
+                state: req.body.state,
+                town: req.body.town,
+            };
 
             Field.create(req.body, (err, field)=>{
                 if(err) return res.json({status: "failure", message: "Failed to create fields."});
