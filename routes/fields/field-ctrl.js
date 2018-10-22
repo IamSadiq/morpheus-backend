@@ -10,93 +10,24 @@ router.post('/', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err) => {
         if(err) return res.json({status: "failure", message: "Failed to authenticate."});
 
-        tAsks = [
-            {
-                // uid: req.userId,
-                plantName: "Rice",
-                description: "Plouging before planting",
-                type: "Land Preparation",
-                startDate: Date.now(),
-                endDate: "",
-                budget: 7000
-            },
-            {
-                // uid: req.userId,
-                plantName: "Maize",
-                description: "Planting the crops",
-                type: "Planting",
-                startDate: Date.now(),
-                endDate: "",
-                budget: 2000
-            },
-            {
-                // uid: req.userId,
-                plantName: "Yam",
-                description: "Adding Fertilizers to field",
-                type: "Fertilizing",
-                startDate: Date.now(),
-                endDate: "",
-                budget: 1000
-            },
-            {
-                // uid: req.userId,
-                plantName: "Maize",
-                description: "Maintenance like weeding, ridging etc.",
-                type: "Maintenance",
-                startDate: Date.now(),
-                endDate: "",
-                budget: 500
-            },
-            {
-                // uid: req.userId,
-                plantName: "Rice",
-                description: "Harvesting produce from field",
-                type: "Harvesting",
-                startDate: Date.now(),
-                endDate: "",
-                budget: 3000
-            },
-            {
-                // uid: req.userId,
-                plantName: "Tomatoe",
-                description: "Storing the produce",
-                type: "Storage",
-                startDate: Date.now(),
-                endDate: "",
-                budget: 4000
-            }
-        ];
-
-        req.body.uid = req.userId;
-        // req.body.tasks = [];
-
-        Field.create(req.body, (err, response)=>{
-            if(err) return res.json({status: "failure"});
-            let field = response;
-            let tasks = [];
+        Task.find({plantName: req.body.plantName}, (err, tasks) => {
+            if(err) return res.json({status: "failure", message: "Failed to find tasks."});
             let taskIds = [];
             let fieldBudget = 0;
 
-            tAsks.forEach(elem => {
-                if (elem.plantName === req.body.plantName){
-                    elem["fieldId"] = field._id;
-                    Task.create(elem, (err, task)=>{
-                        if(err) return res.json({status: "failure", message: "Failed to create "+ elem.type + " task."});
-                        fieldBudget += task.budget;
-                        taskIds.push({taskId: task._id});
-                        tasks.push(task);
-                    });
-                }
-            });
-
             tasks.forEach(elem => {
-                Field.findByIdAndUpdate(field._id, {tasks: taskIds, totalBudget: fieldBudget}, (err, field) => {
-                    if (err) return res.json({status: "failure", message: "Failed to update Field tasks."});
-                    return res.json({status: "success", fieldId: field._id, tasks: tasks});
-                });
+                taskIds.push({taskId: task._id});
+                fieldBudget += elem.budget;
             });
 
-            // return res.json({status: "success", fieldId: field._id, tasks: tasks});
+            req.body.uid = req.userId;
+            req.body.tasks = taskIds;
+            req.body.totalBudget = fieldBudget;
+
+            Field.create(req.body, (err, field)=>{
+                if(err) return res.json({status: "failure", message: "Failed to create fields."});
+                return res.json({status: "success", fieldId: field._id, tasks: tasks});
+            });
         });
     });
 });

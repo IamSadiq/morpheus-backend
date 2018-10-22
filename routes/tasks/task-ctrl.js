@@ -11,8 +11,8 @@ router.post('/', VerifyToken, (req, res) => {
 
         let now = Date.now();
         req.body.uid = req.userId;
-        req.body.startDate = now.toString();
-        req.body.endDate = (now * 60 * 60 * 24 * req.body.duration * 1000).toString();
+        req.body.startDate = new Date(now);
+        req.body.endDate = new Date(now + 60 * 60 * 24 * req.body.duration * 1000);
 
         Task.create(req.body, (err, response)=>{
             if(err) return res.json({status: "failure", err: err});
