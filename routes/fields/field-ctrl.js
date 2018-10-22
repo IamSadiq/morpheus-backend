@@ -21,7 +21,7 @@ router.get('/', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => {
         if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the users."});
 
-        Field.find({fieldId: req.body.fieldId}, (err, fields) => {
+        Field.find({}, (err, fields) => {
             if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the fields."});
             if (!fields) return res.status(404).send({status: "failure", message: "No fields found."});
             res.status(200).send({status: "success", fields: fields});

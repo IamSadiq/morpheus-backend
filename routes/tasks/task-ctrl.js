@@ -21,7 +21,7 @@ router.get('/', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => {
         if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the users."});
 
-        Task.find({fieldId: req.body.fieldId}, (err, tasks) => {
+        Task.find({}, (err, tasks) => {
             if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the tasks."});
             if (!tasks) return res.status(404).send({status: "failure", reason: "No tasks found."});
             res.status(200).send({status: "success", tasks: tasks});

@@ -12,10 +12,12 @@ const UserRouter = require('./routes/users/user-ctrl');
 
 const TaskRouter = require('./routes/tasks/task-ctrl');
 const FieldRouter = require('./routes/fields/field-ctrl');
+const ExpenseRouter = require('./routes/expenses/expense-ctrl');
 
 var app = express();
 
 mongoose.connect('mongodb://localhost/farmwit', { useMongoClient: true, useNewUrlParser: true });
+// mongoose.connect('mongodb://<dbuser>:<dbpassword>@ds030607.mlab.com:30607/farmwit', { useMongoClient: true, useNewUrlParser: true });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -36,6 +38,7 @@ app.use('/users', UserRouter);
 
 app.use('/tasks', TaskRouter);
 app.use('/fields', FieldRouter);
+app.use('/expenses', ExpenseRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
