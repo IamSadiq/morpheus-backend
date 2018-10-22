@@ -17,7 +17,7 @@ const TaskSchema = new Schema({
     status: { type: String, default: 'Pending' },
     type: String,
     startDate: String,
-    endDate: String,
+    endDate: { type: String, default: "" },
     budget: { type: Number, default: 0 }
 });
 
