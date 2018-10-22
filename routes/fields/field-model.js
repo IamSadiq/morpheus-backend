@@ -12,8 +12,7 @@ const FieldSchema = new Schema({
                 type: Schema.Types.ObjectId,
                 ref: 'Tasks'
             },
-        ],
-        default: []
+        ]
     },
     plantName: String,
     fieldSize: { type: Number, default: 0 },
