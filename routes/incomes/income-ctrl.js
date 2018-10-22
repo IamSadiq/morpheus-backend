@@ -30,7 +30,7 @@ router.get('/', VerifyToken, (req, res) => {
     });
 });
 
-// GETS A SINGLE INCOME FROM THE DATABASE
+// GETS A SINGLE INCOME FROM THE DATABASE -- > BY INCOME ID
 router.get('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the user."});
@@ -43,12 +43,12 @@ router.get('/:id', VerifyToken, (req, res) => {
     });
 });
 
-// UPDATES A SINGLE INCOME IN THE DATABASE
-router.put('/:id', VerifyToken, (req, res) => {
+// UPDATES A SINGLE INCOME IN THE DATABASE -- > USER ID
+router.put('/user/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, sessUser) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the users."});
 
-        Income.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, income) {
+        Income.find({uid: req.params.id}, req.body, {new: true}, function (err, income) {
             if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the income."});
             if (!income) return res.status(404).send({status: "failure", message: "No income found."});
             res.status(200).send({status: "success", income: income});
@@ -61,7 +61,7 @@ router.delete('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the user."});
 
-        Income.findByIdAndRemove(req.params.id, (err, income) => {
+        Income.deleteOne(req.params.id, (err, income) => {
             if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the income."});
             if (!income) return res.status(404).send({status: "failure", message: "No income found."});
             res.status(200).json({status: "success", message: "Income successfully deleted."});
@@ -74,7 +74,7 @@ router.delete('/', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the user."});
 
-        Income.remove({}, (err, incomes) => {
+        Income.deleteMany({}, (err, incomes) => {
             if (err) return res.status(500).send({status: "failure", reason: "There was a problem deleting incomes."});
             if (incomes.length > 0) return res.status(404).send({status: "failure", reason: "Failed to delete incomes."});
             res.status(200).json({status: "success", message: "Incomes successfully deleted."});

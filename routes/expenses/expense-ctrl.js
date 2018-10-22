@@ -61,7 +61,7 @@ router.delete('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the user."});
 
-        Expense.findByIdAndRemove(req.params.id, (err, expense) => {
+        Expense.deleteOne(req.params.id, (err, expense) => {
             if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the expense."});
             if (!expense) return res.status(404).send({status: "failure", message: "No expense found."});
             res.status(200).json({status: "success", message: "Expense successfully deleted."});
@@ -74,7 +74,7 @@ router.delete('/', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the user."});
 
-        Expense.remove({}, (err, expenses) => {
+        Expense.deleteMany({}, (err, expenses) => {
             if (err) return res.status(500).send({status: "failure", reason: "There was a problem deleting expenses."});
             if (expenses.length > 0) return res.status(404).send({status: "failure", reason: "Failed to delete expenses."});
             res.status(200).json({status: "success", message: "Expenses successfully deleted."});

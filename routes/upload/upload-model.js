@@ -2,8 +2,11 @@ const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var UploadSchema = new Schema({
-    email: String,
-    avatar: String
+    uid: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    avatar: File
 });
 
 module.exports = mongoose.model('Upload', UploadSchema);

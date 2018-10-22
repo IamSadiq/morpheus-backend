@@ -96,7 +96,7 @@ router.delete('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the user."});
 
-        Field.findByIdAndRemove(req.params.id, (err, field) => {
+        Field.deleteOne(req.params.id, (err, field) => {
             if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the field."});
             if (!field) return res.status(404).send({status: "failure", message: "No field found."});
             res.status(200).json({status: "success", message: "Field successfully deleted."});
@@ -109,7 +109,7 @@ router.delete('/', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the user."});
 
-        Field.remove({}, (err, fields) => {
+        Field.deleteMany({}, (err, fields) => {
             if (err) return res.status(500).send({status: "failure", reason: "There was a problem deleting fields."});
             if (fields.length > 0) return res.status(404).send({status: "failure", reason: "Failed to delete fields."});
             res.status(200).json({status: "success", message: "Fields successfully deleted."});
