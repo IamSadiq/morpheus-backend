@@ -15,15 +15,15 @@ const FieldSchema = new Schema({
         ]
     },
     plantName: String,
-    fieldSize: { type: Number, default: 0 },
+    fieldSize: Number,
     location: {
-        longitude: { type: Number, default: 0 },
-        latitude: { type: Number, default: 0 },
+        longitude: Number,
+        latitude: Number,
         country: { type: String, default: 'Nigeria' },
         state: String,
         town: String
     },
-    totalBudget: { type: Number, default: 0 },
+    totalBudget: Number
 });
 
 module.exports = mongoose.model('Fields', FieldSchema);

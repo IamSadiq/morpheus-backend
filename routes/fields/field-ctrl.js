@@ -16,7 +16,7 @@ router.post('/', VerifyToken, (req, res) => {
             let fieldBudget = 0;
 
             tasks.forEach(elem => {
-                taskIds.push({taskId: elem._id});
+                taskIds.push({_id: elem._id});
                 fieldBudget += elem.budget;
             });
 
@@ -24,15 +24,15 @@ router.post('/', VerifyToken, (req, res) => {
             req.body.tasks = taskIds;
             req.body.totalBudget = fieldBudget;
             req.body.location = {
-                longitute: 6.987654,
-                latitude: 16.0654567,
+                longitude: req.body.long,
+                latitude: req.body.lat,
                 country: req.body.country,
                 state: req.body.state,
                 town: req.body.town,
             };
 
             Field.create(req.body, (err, field)=>{
-                if(err) return res.json({status: "failure", message: "Failed to create fields."});
+                if(err) return res.json({status: "failure", message: "Failed to create fields.", err: err});
                 return res.json({status: "success", field: field, tasks: tasks});
             });
         });
