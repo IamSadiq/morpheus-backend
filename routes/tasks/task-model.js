@@ -8,15 +8,16 @@ const TaskSchema = new Schema({
     },
     fieldId: {
         type: Schema.Types.ObjectId,
-        ref: 'Fields'
+        ref: 'Fields',
     },
     plantName: String,
     description: String,
-    status: { type: String, default: 'Pending' },
+    status: String,
     type: String,
+    duration: Number,
     startDate: String,
-    endDate: { type: String, default: "" },
-    budget: { type: Number, default: 0 }
+    endDate: String,
+    budget: Number
 });
 
 module.exports = mongoose.model('Tasks', TaskSchema);

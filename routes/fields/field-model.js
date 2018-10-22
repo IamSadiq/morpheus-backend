@@ -15,14 +15,14 @@ const FieldSchema = new Schema({
         ],
         default: []
     },
-    plantName: String,
-    fieldSize: Number,
+    plantName: { type: String, default: "" },
+    fieldSize: { type: Number, default: 0 },
     location: {
-        longitude: Number,
-        latitude: Number,
+        longitude: { type: Number, default: 0 },
+        latitude: { type: Number, default: 0 },
         country: { type: String, default: 'Nigeria' },
-        state: String,
-        town: String
+        state: { type: String, default: "" },
+        town: { type: String, default: "" },
     },
     totalBudget: { type: Number, default: 0 },
 });

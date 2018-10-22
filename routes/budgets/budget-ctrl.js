@@ -24,20 +24,30 @@ router.get('/', VerifyToken, (req, res) => {
 
         Budget.find({}, (err, budgets) => {
             if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the budgets."});
-            if (!budgets) return res.status(404).send({status: "failure", message: "No budget found."});
             res.status(200).send({status: "success", budgets: budgets});
         });
     });
 });
 
-// GETS A SINGLE BUDGET FROM THE DATABASE
+// GETS A SINGLE BUDGET FROM THE DATABASE --> BY BUDGET ID
 router.get('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the user."});
 
         Budget.findById(req.params.id, (err, budget) => {
             if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the budget."});
-            if (!budget) return res.status(404).send({status: "failure", message: "No budget found."});
+            res.status(200).send({status: "success", budget: budget});
+        });
+    });
+});
+
+// GETS A SINGLE BUDGET FROM THE DATABASE --> BY USER ID
+router.get('/user/:id', VerifyToken, (req, res) => {
+    User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
+        if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the user."});
+
+        Budget.find({uid: req.params.id}, (err, budget) => {
+            if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the budget."});
             res.status(200).send({status: "success", budget: budget});
         });
     });
@@ -50,7 +60,6 @@ router.put('/:id', VerifyToken, (req, res) => {
 
         Budget.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, budget) {
             if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the budget."});
-            if (!budget) return res.status(404).send({status: "failure", message: "No budget found."});
             res.status(200).send({status: "success", budget: budget});
         });
     });
@@ -63,7 +72,6 @@ router.delete('/:id', VerifyToken, (req, res) => {
 
         Budget.findByIdAndRemove(req.params.id, (err, budget) => {
             if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the budget."});
-            if (!budget) return res.status(404).send({status: "failure", message: "No budget found."});
             res.status(200).json({status: "success", message: "Budget successfully deleted."});
         });
     });

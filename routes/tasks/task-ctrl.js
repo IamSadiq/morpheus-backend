@@ -9,10 +9,14 @@ router.post('/', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err) => {
         if(err) return res.json({status: "failure", reason: "Failed to authenticate."});
 
+        let now = Date.now();
         req.body.uid = req.userId;
+        req.body.startDate = now.toString();
+        req.body.endDate = (now * 60 * 60 * 24 * req.body.duration * 1000).toString();
+
         Task.create(req.body, (err, response)=>{
             if(err) return res.json({status: "failure", err: err});
-            return res.json({status: "success", taskId: response._id, status: "Pending"});
+            return res.json(response);
         });
     });
 });
