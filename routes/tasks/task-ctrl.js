@@ -11,7 +11,7 @@ router.post('/', VerifyToken, (req, res) => {
 
         req.body.uid = req.userId;
         Task.create(req.body, (err, response)=>{
-            if(err) return res.json({status: "failure"});
+            if(err) return res.json({status: "failure", err: err});
             return res.json({status: "success", taskId: response._id, status: "Pending"});
         });
     });
@@ -24,21 +24,31 @@ router.get('/', VerifyToken, (req, res) => {
 
         Task.find({}, (err, tasks) => {
             if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the tasks."});
-            if (!tasks) return res.status(404).send({status: "failure", reason: "No tasks found."});
-            res.status(200).send({status: "success", tasks: tasks});
+            return res.status(200).send({status: "success", tasks: tasks});
         });
     });
 });
 
-// GETS A SINGLE TASK FROM THE DATABASE
+// GETS A SINGLE TASK FROM THE DATABASE --> BY USER ID
+router.get('/user/:id', VerifyToken, (req, res) => {
+    User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
+        if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the user."});
+
+        Task.find({uid: req.params.id}, (err, task) => {
+            if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the task."});
+            return res.status(200).send({status: "success", task: task});
+        });
+    });
+});
+
+// GETS A SINGLE TASK FROM THE DATABASE --> BY TASK ID
 router.get('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the user."});
 
         Task.findById(req.params.id, (err, task) => {
             if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the task."});
-            if (!task) return res.status(404).send({status: "failure", reason: "No task found."});
-            res.status(200).send({status: "success", task: task});
+            return res.status(200).send({status: "success", task: task});
         });
     });
 });
@@ -50,8 +60,7 @@ router.put('/:id', VerifyToken, (req, res) => {
 
         Task.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, task) {
             if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the task."});
-            if (!task) return res.status(404).send({status: "failure", reason: "No task found."});
-            res.status(200).send({status: "success", task: task});
+            return res.status(200).send({status: "success", task: task});
         });
     });
 });
@@ -61,10 +70,9 @@ router.delete('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the user."});
 
-        Task.findByIdAndRemove(req.params.id, (err, task) => {
+        Task.deleteOne(req.params.id, (err, task) => {
             if (err) return res.status(500).send({status: "failure", message: "There was a problem deleting the task."});
-            if (!task) return res.status(404).send({status: "failure", message: "No task found."});
-            res.status(200).json({status: "success", message: "Task successfully deleted."});
+            return res.status(200).json({status: "success", message: "Task successfully deleted."});
         });
     });
 });
@@ -74,10 +82,10 @@ router.delete('/', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the user."});
 
-        Task.remove({}, (err, tasks) => {
+        Task.deleteMany({}, (err, tasks) => {
             if (err) return res.status(500).send({status: "failure", reason: "There was a problem deleting tasks."});
-            if (tasks.length > 0) return res.status(404).send({status: "failure", reason: "Failed to delete tasks."});
-            res.status(200).json({status: "success", message: "Tasks successfully deleted."});
+            // if (tasks.length > 0) return res.status(404).send({status: "failure", reason: "Failed to delete tasks."});
+            return res.status(200).json({status: "success", message: "Tasks successfully deleted."});
         });
     });
 });

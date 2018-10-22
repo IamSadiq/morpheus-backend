@@ -114,7 +114,20 @@ router.get('/', VerifyToken, (req, res) => {
     });
 });
 
-// GETS A SINGLE FIELD FROM THE DATABASE
+// GETS A SINGLE FIELD FROM THE DATABASE - BY USER ID
+router.get('/user/:id', VerifyToken, (req, res) => {
+    User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
+        if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the user."});
+
+        Field.find({uid: req.params.id}, (err, field) => {
+            if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the field."});
+            if (!field) return res.status(404).send({status: "failure", message: "No field found."});
+            res.status(200).send({status: "success", field: field});
+        });
+    });
+});
+
+// GETS A SINGLE FIELD FROM THE DATABASE - BY FIELD ID
 router.get('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the user."});

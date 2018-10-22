@@ -4,13 +4,11 @@ const Schema = mongoose.Schema;
 const TaskSchema = new Schema({
     uid: {
         type: Schema.Types.ObjectId,
-        ref: 'User',
-        default: ""
+        ref: 'User'
     },
     fieldId: {
         type: Schema.Types.ObjectId,
-        ref: 'Fields',
-        default: ""
+        ref: 'Fields'
     },
     plantName: String,
     description: String,
