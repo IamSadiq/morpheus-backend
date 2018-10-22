@@ -1,6 +1,4 @@
 var assert = require('assert');
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 
 describe('#indexOf()', function() {
     it('should return -1 when the value is not present', function() {

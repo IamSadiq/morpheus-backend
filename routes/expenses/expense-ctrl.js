@@ -23,7 +23,7 @@ router.get('/', VerifyToken, (req, res) => {
 
         Expense.find({}, (err, expenses) => {
             if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the expenses."});
-            if (!fields) return res.status(404).send({status: "failure", message: "No expense found."});
+            if (!expenses) return res.status(404).send({status: "failure", message: "No expense found."});
             res.status(200).send({status: "success", expenses: expenses});
         });
     });
