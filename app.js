@@ -13,6 +13,7 @@ const UserRouter = require('./routes/users/user-ctrl');
 const TaskRouter = require('./routes/tasks/task-ctrl');
 const FieldRouter = require('./routes/fields/field-ctrl');
 const ExpenseRouter = require('./routes/expenses/expense-ctrl');
+const IncomeRouter = require('./routes/incomes/income-ctrl');
 
 var app = express();
 
@@ -39,6 +40,7 @@ app.use('/users', UserRouter);
 app.use('/tasks', TaskRouter);
 app.use('/fields', FieldRouter);
 app.use('/expenses', ExpenseRouter);
+app.use('/incomes', IncomeRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
