@@ -4,7 +4,7 @@ const User = require('../users/user-model');
 const Field = require('./field-model');
 const VerifyToken = require('../auth/VerifyToken');
 
-// CREATES A NEW USER
+// CREATES A NEW FIELD
 router.post('/', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err) => {
         if(err) return res.json({status: "failure", message: "Failed to authenticate."});
@@ -16,7 +16,7 @@ router.post('/', VerifyToken, (req, res) => {
     });
 });
 
-// RETURNS ALL THE USERS IN THE DATABASE
+// RETURNS ALL THE FIELDS IN THE DATABASE
 router.get('/', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => {
         if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the users."});
@@ -29,7 +29,7 @@ router.get('/', VerifyToken, (req, res) => {
     });
 });
 
-// GETS A SINGLE USER FROM THE DATABASE
+// GETS A SINGLE FIELD FROM THE DATABASE
 router.get('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the user."});
@@ -42,7 +42,7 @@ router.get('/:id', VerifyToken, (req, res) => {
     });
 });
 
-// UPDATES A SINGLE USER IN THE DATABASE
+// UPDATES A SINGLE FIELD IN THE DATABASE
 router.put('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, sessUser) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the users."});
@@ -64,6 +64,19 @@ router.delete('/:id', VerifyToken, (req, res) => {
             if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the field."});
             if (!field) return res.status(404).send({status: "failure", message: "No field found."});
             res.status(200).json({status: "success", message: "Field successfully deleted."});
+        });
+    });
+});
+
+// DELETES ALL FIELDS FROM THE DATABASE
+router.delete('/', VerifyToken, (req, res) => {
+    User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
+        if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the user."});
+
+        Field.remove({}, (err, fields) => {
+            if (err) return res.status(500).send({status: "failure", reason: "There was a problem deleting fields."});
+            if (fields.length > 0) return res.status(404).send({status: "failure", reason: "Failed to delete fields."});
+            res.status(200).json({status: "success", message: "Fields successfully deleted."});
         });
     });
 });

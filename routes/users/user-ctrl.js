@@ -58,7 +58,7 @@ router.delete('/:id', VerifyToken, (req, res) => {
         User.findByIdAndRemove(req.params.id, (err, user) => {
             if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the user."});
             if (!user) return res.status(404).send({status: "failure", reason: "No user found."});
-            res.status(200).json({status: "succes", message: "User successfully deleted."});
+            res.status(200).json({status: "success", message: "User successfully deleted."});
         });
     });
 });

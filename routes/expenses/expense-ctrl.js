@@ -4,7 +4,7 @@ const User = require('../users/user-model');
 const Expense = require('./expense-model');
 const VerifyToken = require('../auth/VerifyToken');
 
-// CREATES A NEW Expense
+// CREATES A NEW EXPENSE
 router.post('/', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err) => {
         if(err) return res.json({status: "failure", message: "Failed to authenticate."});
@@ -16,7 +16,7 @@ router.post('/', VerifyToken, (req, res) => {
     });
 });
 
-// RETURNS ALL THE Expense IN THE DATABASE
+// RETURNS ALL THE EXPENSES IN THE DATABASE
 router.get('/', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => {
         if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the users."});
@@ -29,7 +29,7 @@ router.get('/', VerifyToken, (req, res) => {
     });
 });
 
-// GETS A SINGLE Expense FROM THE DATABASE
+// GETS A SINGLE EXPENSE FROM THE DATABASE
 router.get('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the user."});
@@ -42,7 +42,7 @@ router.get('/:id', VerifyToken, (req, res) => {
     });
 });
 
-// UPDATES A SINGLE Expense IN THE DATABASE
+// UPDATES A SINGLE EXPENSE IN THE DATABASE
 router.put('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, sessUser) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the users."});
@@ -55,7 +55,7 @@ router.put('/:id', VerifyToken, (req, res) => {
     });
 });
 
-// DELETES A Expense FROM THE DATABASE
+// DELETES A EXPENSE FROM THE DATABASE
 router.delete('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the user."});
@@ -68,5 +68,17 @@ router.delete('/:id', VerifyToken, (req, res) => {
     });
 });
 
+// DELETES ALL EXPENSES FROM THE DATABASE
+router.delete('/', VerifyToken, (req, res) => {
+    User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
+        if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the user."});
+
+        Expense.remove({}, (err, expenses) => {
+            if (err) return res.status(500).send({status: "failure", reason: "There was a problem deleting expenses."});
+            if (expenses.length > 0) return res.status(404).send({status: "failure", reason: "Failed to delete expenses."});
+            res.status(200).json({status: "success", message: "Expenses successfully deleted."});
+        });
+    });
+});
 
 module.exports = router;

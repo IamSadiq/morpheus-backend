@@ -4,7 +4,7 @@ const User = require('../users/user-model');
 const Task = require('./task-model');
 const VerifyToken = require('../auth/VerifyToken');
 
-// CREATES A NEW USER
+// CREATES A NEW TASK
 router.post('/', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err) => {
         if(err) return res.json({status: "failure", reason: "Failed to authenticate."});
@@ -16,7 +16,7 @@ router.post('/', VerifyToken, (req, res) => {
     });
 });
 
-// RETURNS ALL THE USERS IN THE DATABASE
+// RETURNS ALL THE TASKS IN THE DATABASE
 router.get('/', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => {
         if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the users."});
@@ -29,7 +29,7 @@ router.get('/', VerifyToken, (req, res) => {
     });
 });
 
-// GETS A SINGLE USER FROM THE DATABASE
+// GETS A SINGLE TASK FROM THE DATABASE
 router.get('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the user."});
@@ -42,7 +42,7 @@ router.get('/:id', VerifyToken, (req, res) => {
     });
 });
 
-// UPDATES A SINGLE USER IN THE DATABASE
+// UPDATES A SINGLE TASK IN THE DATABASE
 router.put('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err, sessUser) => { // { password: 0 }projection
         if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the users."});
@@ -55,5 +55,30 @@ router.put('/:id', VerifyToken, (req, res) => {
     });
 });
 
+// DELETES A TASK FROM THE DATABASE
+router.delete('/:id', VerifyToken, (req, res) => {
+    User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
+        if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the user."});
+
+        Task.findByIdAndRemove(req.params.id, (err, task) => {
+            if (err) return res.status(500).send({status: "failure", message: "There was a problem deleting the task."});
+            if (!task) return res.status(404).send({status: "failure", message: "No task found."});
+            res.status(200).json({status: "success", message: "Task successfully deleted."});
+        });
+    });
+});
+
+// DELETES ALL TASKS FROM THE DATABASE
+router.delete('/', VerifyToken, (req, res) => {
+    User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
+        if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the user."});
+
+        Task.remove({}, (err, tasks) => {
+            if (err) return res.status(500).send({status: "failure", reason: "There was a problem deleting tasks."});
+            if (tasks.length > 0) return res.status(404).send({status: "failure", reason: "Failed to delete tasks."});
+            res.status(200).json({status: "success", message: "Tasks successfully deleted."});
+        });
+    });
+});
 
 module.exports = router;
