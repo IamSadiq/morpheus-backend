@@ -12,64 +12,64 @@ router.post('/', VerifyToken, (req, res) => {
 
         tAsks = [
             {
-                uid: req.userId,
-                plantName: "Maize",
+                // uid: req.userId,
+                plantName: "Rice",
                 description: "Plouging before planting",
                 type: "Land Preparation",
                 startDate: Date.now(),
                 endDate: "",
-                budget: 100
+                budget: 7000
             },
             {
-                uid: req.userId,
+                // uid: req.userId,
                 plantName: "Maize",
                 description: "Planting the crops",
                 type: "Planting",
                 startDate: Date.now(),
                 endDate: "",
-                budget: 100
+                budget: 2000
             },
             {
-                uid: req.userId,
-                plantName: "Maize",
+                // uid: req.userId,
+                plantName: "Yam",
                 description: "Adding Fertilizers to field",
                 type: "Fertilizing",
                 startDate: Date.now(),
                 endDate: "",
-                budget: 100
+                budget: 1000
             },
             {
-                uid: req.userId,
+                // uid: req.userId,
                 plantName: "Maize",
                 description: "Maintenance like weeding, ridging etc.",
                 type: "Maintenance",
                 startDate: Date.now(),
                 endDate: "",
-                budget: 100
+                budget: 500
             },
             {
-                uid: req.userId,
-                plantName: "Maize",
+                // uid: req.userId,
+                plantName: "Rice",
                 description: "Harvesting produce from field",
                 type: "Harvesting",
                 startDate: Date.now(),
                 endDate: "",
-                budget: 100
+                budget: 3000
             },
             {
-                uid: req.userId,
-                plantName: "Maize",
+                // uid: req.userId,
+                plantName: "Tomatoe",
                 description: "Storing the produce",
                 type: "Storage",
                 startDate: Date.now(),
                 endDate: "",
-                budget: 100
+                budget: 4000
             }
         ];
 
         req.body.uid = req.userId;
-        req.body.tasks = [];
-        
+        // req.body.tasks = [];
+
         Field.create(req.body, (err, response)=>{
             if(err) return res.json({status: "failure"});
             let field = response;

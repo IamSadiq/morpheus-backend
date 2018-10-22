@@ -6,12 +6,15 @@ const FieldSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    tasks: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Tasks'
-        }
-    ],
+    tasks: {
+        type: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Tasks'
+            },
+        ],
+        default: []
+    },
     plantName: String,
     fieldSize: Number,
     location: {
