@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../users/user-model');
 const Field = require('./field-model');
+const Task = require('../tasks/task-model');
 const VerifyToken = require('../auth/VerifyToken');
 
 // CREATES A NEW FIELD
@@ -9,9 +10,93 @@ router.post('/', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err) => {
         if(err) return res.json({status: "failure", message: "Failed to authenticate."});
 
+        tAsks = [
+            {
+                uid: req.userId,
+                plantName: "Maize",
+                description: "Plouging before planting",
+                type: "Land Preparation",
+                startDate: Date.now(),
+                endDate: "",
+                budget: 100
+            },
+            {
+                uid: req.userId,
+                plantName: "Maize",
+                description: "Planting the crops",
+                type: "Planting",
+                startDate: Date.now(),
+                endDate: "",
+                budget: 100
+            },
+            {
+                uid: req.userId,
+                plantName: "Maize",
+                description: "Adding Fertilizers to field",
+                type: "Fertilizing",
+                startDate: Date.now(),
+                endDate: "",
+                budget: 100
+            },
+            {
+                uid: req.userId,
+                plantName: "Maize",
+                description: "Maintenance like weeding, ridging etc.",
+                type: "Maintenance",
+                startDate: Date.now(),
+                endDate: "",
+                budget: 100
+            },
+            {
+                uid: req.userId,
+                plantName: "Maize",
+                description: "Harvesting produce from field",
+                type: "Harvesting",
+                startDate: Date.now(),
+                endDate: "",
+                budget: 100
+            },
+            {
+                uid: req.userId,
+                plantName: "Maize",
+                description: "Storing the produce",
+                type: "Storage",
+                startDate: Date.now(),
+                endDate: "",
+                budget: 100
+            }
+        ];
+
+        req.body.uid = req.userId;
+        req.body.tasks = [];
+        
         Field.create(req.body, (err, response)=>{
             if(err) return res.json({status: "failure"});
-            return res.json({status: "success", fieldId: response._id});
+            let field = response;
+            let tasks = [];
+            let taskIds = [];
+            let fieldBudget = 0;
+
+            tAsks.forEach(elem => {
+                if (elem.plantName === req.body.plantName){
+                    elem["fieldId"] = field._id;
+                    Task.create(elem, (err, task)=>{
+                        if(err) return res.json({status: "failure", message: "Failed to create "+ elem.type + " task."});
+                        fieldBudget += task.budget;
+                        taskIds.push({taskId: task._id});
+                        tasks.push(task);
+                    });
+                }
+            });
+
+            tasks.forEach(elem => {
+                Field.findByIdAndUpdate(field._id, {tasks: taskIds, totalBudget: fieldBudget}, (err, field) => {
+                    if (err) return res.json({status: "failure", message: "Failed to update Field tasks."});
+                    return res.json({status: "success", fieldId: field._id, tasks: tasks});
+                });
+            });
+
+            // return res.json({status: "success", fieldId: field._id, tasks: tasks});
         });
     });
 });

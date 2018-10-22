@@ -12,7 +12,7 @@ const FieldSchema = new Schema({
             ref: 'Tasks'
         }
     ],
-    cropName: String,
+    plantName: String,
     fieldSize: Number,
     location: {
         longitude: Number,
@@ -21,7 +21,7 @@ const FieldSchema = new Schema({
         state: String,
         town: String
     },
-    totalBudget: String
+    totalBudget: { type: Number, default: 0 },
 });
 
 module.exports = mongoose.model('Fields', FieldSchema);

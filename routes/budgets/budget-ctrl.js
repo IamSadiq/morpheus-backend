@@ -9,6 +9,7 @@ router.post('/', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err) => {
         if(err) return res.json({status: "failure", message: "Failed to authenticate."});
 
+        req.body.uid = req.userId;
         Budget.create(req.body, (err, budget)=>{
             if(err) return res.json({status: "failure"});
             return res.json({status: "success", budget: budget});

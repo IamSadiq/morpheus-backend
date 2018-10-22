@@ -9,6 +9,7 @@ router.post('/', VerifyToken, (req, res) => {
     User.findById(req.userId, { password: 0 }, (err) => {
         if(err) return res.json({status: "failure", reason: "Failed to authenticate."});
 
+        req.body.uid = req.userId;
         Task.create(req.body, (err, response)=>{
             if(err) return res.json({status: "failure"});
             return res.json({status: "success", taskId: response._id, status: "Pending"});
