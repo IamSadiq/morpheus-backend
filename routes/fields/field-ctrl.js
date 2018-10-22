@@ -7,9 +7,7 @@ const VerifyToken = require('../auth/VerifyToken');
 
 // CREATES A NEW FIELD
 router.post('/', VerifyToken, (req, res) => {
-    User.findById(req.userId, { password: 0 }, (err) => {
-        if(err) return res.json({status: "failure", message: "Failed to authenticate."});
-
+    if(req.userId){
         Task.find({plantName: req.body.plantName}, (err, tasks) => {
             if(err) return res.json({status: "failure", message: "Failed to find tasks."});
             let taskIds = [];
@@ -36,85 +34,80 @@ router.post('/', VerifyToken, (req, res) => {
                 return res.json({status: "success", field: field, tasks: tasks});
             });
         });
-    });
+    }
+    return res.json({status: "failure", message: "Failed to authenticate."});
 });
 
 // RETURNS ALL THE FIELDS IN THE DATABASE
 router.get('/', VerifyToken, (req, res) => {
-    User.findById(req.userId, { password: 0 }, (err, user) => {
-        if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the users."});
-
+    if(req.userId){
         Field.find({}, (err, fields) => {
             if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the fields."});
             if (!fields) return res.status(404).send({status: "failure", message: "No fields found."});
             res.status(200).send({status: "success", fields: fields});
         });
-    });
+    }
+    return res.json({status: "failure", message: "Failed to authenticate."});
 });
 
 // GETS A SINGLE FIELD FROM THE DATABASE - BY USER ID
 router.get('/user/:id', VerifyToken, (req, res) => {
-    User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
-        if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the user."});
-
+    if(req.userId){
         Field.find({uid: req.params.id}, (err, field) => {
             if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the field."});
             if (!field) return res.status(404).send({status: "failure", message: "No field found."});
             res.status(200).send({status: "success", field: field});
         });
-    });
+    }
+    return res.json({status: "failure", message: "Failed to authenticate."});
 });
 
 // GETS A SINGLE FIELD FROM THE DATABASE - BY FIELD ID
 router.get('/:id', VerifyToken, (req, res) => {
-    User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
-        if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the user."});
-
+    if(req.userId){
         Field.findById(req.params.id, (err, field) => {
             if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the field."});
             if (!field) return res.status(404).send({status: "failure", message: "No field found."});
             res.status(200).send({status: "success", field: field});
         });
-    });
+    }
+    return res.json({status: "failure", message: "Failed to authenticate."});
 });
 
 // UPDATES A SINGLE FIELD IN THE DATABASE
 router.put('/:id', VerifyToken, (req, res) => {
-    User.findById(req.userId, { password: 0 }, (err, sessUser) => { // { password: 0 }projection
-        if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the users."});
-
+    if(req.userId){
         Field.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, field) {
             if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the field."});
             if (!field) return res.status(404).send({status: "failure", message: "No field found."});
             res.status(200).send({status: "success", field: field});
         });
-    });
+    }
+    return res.json({status: "failure", message: "Failed to authenticate."});
 });
 
 // DELETES A FIELD FROM THE DATABASE
 router.delete('/:id', VerifyToken, (req, res) => {
-    User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
-        if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the user."});
-
+    if(req.userId){
         Field.deleteOne(req.params.id, (err, field) => {
             if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the field."});
             if (!field) return res.status(404).send({status: "failure", message: "No field found."});
             res.status(200).json({status: "success", message: "Field successfully deleted."});
         });
-    });
+    }
+    return res.json({status: "failure", message: "Failed to authenticate."});
 });
 
 // DELETES ALL FIELDS FROM THE DATABASE
 router.delete('/', VerifyToken, (req, res) => {
-    User.findById(req.userId, { password: 0 }, (err, user) => { // { password: 0 }projection
-        if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the user."});
-
+    if(req.userId){
         Field.deleteMany({}, (err, fields) => {
             if (err) return res.status(500).send({status: "failure", reason: "There was a problem deleting fields."});
             if (fields.length > 0) return res.status(404).send({status: "failure", reason: "Failed to delete fields."});
             res.status(200).json({status: "success", message: "Fields successfully deleted."});
         });
-    });
+    }
+    return res.json({status: "failure", message: "Failed to authenticate."});
 });
 
 
