@@ -18,6 +18,14 @@ router.post('/', VerifyToken, (req, res) => {
             tasks.forEach(elem => {
                 taskIds.push({_id: elem._id});
                 fieldBudget += elem.budget;
+
+                let now = Date.now();
+                startDate = new Date(now);
+                endDate = new Date(now + 60 * 60 * 24 * elem.duration * 1000);
+
+                Task.findByIdAndUpdate(elem._id, { startDate: startDate, endDate: endDate }, (err)=>{
+                    if(err) return res.json({status: "failure", message:"Failed to update field tasks."})
+                });
             });
 
             req.body.uid = req.userId;
