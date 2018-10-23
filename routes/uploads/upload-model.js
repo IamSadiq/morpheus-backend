@@ -6,7 +6,7 @@ var UploadSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    avatar: File
+    avatar: String
 });
 
 module.exports = mongoose.model('Upload', UploadSchema);

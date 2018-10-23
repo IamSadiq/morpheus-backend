@@ -3,7 +3,7 @@ var fs = require('fs');
 var express = require('express');
 var router = express.Router();
 var User = require('../users/user-model');
-var Upload = require('../upload/upload-model');
+var Upload = require('./upload-model');
 var VerifyToken = require('../auth/VerifyToken');
 
 // POST /upload gets urlencoded bodies

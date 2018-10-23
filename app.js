@@ -15,6 +15,7 @@ const FieldRouter = require('./routes/fields/field-ctrl');
 const ExpenseRouter = require('./routes/expenses/expense-ctrl');
 const IncomeRouter = require('./routes/incomes/income-ctrl');
 const BudgetRouter = require('./routes/budgets/budget-ctrl');
+const UploadRouter = require('./routes/uploads/upload-ctrl');
 
 var app = express();
 
@@ -43,6 +44,7 @@ app.use('/fields', FieldRouter);
 app.use('/expenses', ExpenseRouter);
 app.use('/incomes', IncomeRouter);
 app.use('/budgets', BudgetRouter);
+app.use('/uploads', UploadRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
