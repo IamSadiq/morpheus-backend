@@ -36,63 +36,69 @@ router.post('/upload', VerifyToken, (req, res) => {
 });
 
 router.get('/', VerifyToken, (req, res) => {
-    if(req.userId){
+    User.findById(req.userId, {password: 0}, (err, user) => {
+        if (err) return res.status(500).send("There was a problem finding the user.");
+
         Upload.find({}, VerifyToken, (err, uploads)=>{
             if (err) return res.status(500).json({status: "failure", message: "No upload found."});
             return res.status(500).json({status: "success", uploads: uploads});
         });
-    }
-    return res.json({status: "failure", message: "Failed to authenticate."});
+    });
 });
 
 router.get('/:id', VerifyToken, (req, res) => {
-    if(req.userId){
+    User.findById(req.userId, {password: 0}, (err, user) => {
+        if (err) return res.status(500).send("There was a problem finding the user.");
+
         Upload.findById(req.params.id, (err, upload)=>{
             if (err) return res.status(500).json({status: "failure", message: "No upload found."});
             return res.status(500).json({status: "success", upload: upload});
         });
-    }
-    return res.json({status: "failure", message: "Failed to authenticate."});
+    });
 });
 
 router.get('/user/:id', VerifyToken, (req, res) => {
-    if(req.userId){
+    User.findById(req.userId, {password: 0}, (err, user) => {
+        if (err) return res.status(500).send("There was a problem finding the user.");
+
         Upload.find({uid: req.param.id}, (err, upload)=>{
             if (err) return res.status(500).json({status: "failure", message: "No upload found."});
             return res.status(500).json({status: "success", upload: upload});
         });
-    }
-    return res.json({status: "failure", message: "Failed to authenticate."});
+    });
 });
 
 router.put('/:id', VerifyToken, (req, res) => {
-    if(req.userId){
+    User.findById(req.userId, {password: 0}, (err, user) => {
+        if (err) return res.status(500).send("There was a problem finding the user.");
+
         Upload.findByIdAndUpdate(req.param.id, (err, upload)=>{
             if (err) return res.status(500).json({status: "failure", message: "No upload found."});
             return res.status(500).json({status: "success", upload: upload});
         });
-    }
-    return res.json({status: "failure", message: "Failed to authenticate."});
+    });
 });
 
 router.delete('/:id', VerifyToken, (req, res) => {
-    if(req.userId){
+    User.findById(req.userId, {password: 0}, (err, user) => {
+        if (err) return res.status(500).send("There was a problem finding the user.");
+
         Upload.deleteOne(req.param.id, (err)=>{
             if (err) return res.status(500).json({status: "failure", message: "No upload found."});
             return res.status(500).json({status: "success", message: "Upload successfully deleted."});
         });
-    }
-    return res.json({status: "failure", message: "Failed to authenticate."});
+    });
 });
 
 router.delete('/', VerifyToken, (req, res) => {
-    if(req.userId){
+    User.findById(req.userId, {password: 0}, (err, user) => {
+        if (err) return res.status(500).send("There was a problem finding the user.");
+
         Upload.deleteMany({}, (err)=>{
             if (err) return res.status(500).json({status: "failure", message: "No upload found."});
             return res.status(500).json({status: "success", message: "Uploads successfully deleted."});
         });
-    }
-    return res.json({status: "failure", message: "Failed to authenticate."});
+    });
 });
 
 module.exports = router;
