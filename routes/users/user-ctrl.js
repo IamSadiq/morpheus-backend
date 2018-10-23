@@ -12,8 +12,7 @@ router.post('/', (req, res) => {
         if (sess_user[0]) return res.status(500).send({status: "failure", reason: "User already exists."});
 
         if (!sess_user[0]){
-            // var token = bcrypt.hashSync("jesuismorpheus" + Date.now(), 16);
-            var token = jwt.sign({ id: req.body.email }, "jesuismorpheus");
+            var token = jwt.sign({ id: req.body.email }, "jesuismorpheus", {});
             req.body.apiKey = token;
             
             User.create(req.body, (err, user) => {
@@ -67,7 +66,7 @@ router.delete('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, {password: 0}, (err, user) => {
         if (err) return res.status(500).send("There was a problem finding the user.");
 
-        User.deleteOne(req.params.id, (err, user) => {
+        User.deleteOne({_id: req.params.id}, (err, user) => {
             if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the user."});
             return res.status(200).json({status: "success", message: "User successfully deleted."});
         });

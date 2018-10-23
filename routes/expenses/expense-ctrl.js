@@ -56,12 +56,25 @@ router.put('/:id', VerifyToken, (req, res) => {
     });
 });
 
-// DELETES A EXPENSE FROM THE DATABASE
+// DELETES A EXPENSE FROM THE DATABASE --> BY EXPENSE ID
 router.delete('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, {password: 0}, (err, user) => {
         if (err) return res.status(500).send("There was a problem finding the user.");
 
-        Expense.deleteOne(req.params.id, (err, expense) => {
+        Expense.deleteOne({_id: req.params.id}, (err, expense) => {
+            if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the expense."});
+            if (!expense) return res.status(404).send({status: "failure", message: "No expense found."});
+            res.status(200).json({status: "success", message: "Expense successfully deleted."});
+        });
+    });
+});
+
+// DELETES A EXPENSE FROM THE DATABASE --> USER ID
+router.delete('/user/:id', VerifyToken, (req, res) => {
+    User.findById(req.userId, {password: 0}, (err, user) => {
+        if (err) return res.status(500).send("There was a problem finding the user.");
+
+        Expense.deleteOne({uid: req.params.id}, (err, expense) => {
             if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the expense."});
             if (!expense) return res.status(404).send({status: "failure", message: "No expense found."});
             res.status(200).json({status: "success", message: "Expense successfully deleted."});

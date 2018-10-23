@@ -69,12 +69,24 @@ router.put('/:id', VerifyToken, (req, res) => {
     });
 });
 
-// DELETES A TASK FROM THE DATABASE
+// DELETES A TASK FROM THE DATABASE --> BY TASK ID
 router.delete('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, {password: 0}, (err, user) => {
         if (err) return res.status(500).send("There was a problem finding the user.");
 
-        Task.deleteOne(req.params.id, (err, task) => {
+        Task.deleteOne({_id: req.params.id}, (err, task) => {
+            if (err) return res.status(500).send({status: "failure", message: "There was a problem deleting the task."});
+            return res.status(200).json({status: "success", message: "Task successfully deleted."});
+        });
+    });
+});
+
+// DELETES A TASK FROM THE DATABASE --> BY USER ID
+router.delete('/user/:id', VerifyToken, (req, res) => {
+    User.findById(req.userId, {password: 0}, (err, user) => {
+        if (err) return res.status(500).send("There was a problem finding the user.");
+
+        Task.deleteOne({uid: req.params.id}, (err, task) => {
             if (err) return res.status(500).send({status: "failure", message: "There was a problem deleting the task."});
             return res.status(200).json({status: "success", message: "Task successfully deleted."});
         });

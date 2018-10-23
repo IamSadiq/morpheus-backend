@@ -65,12 +65,24 @@ router.put('/:id', VerifyToken, (req, res) => {
     });
 });
 
-// DELETES A BUDGET FROM THE DATABASE
+// DELETES A BUDGET FROM THE DATABASE --> BY BUDGET ID
 router.delete('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, {password: 0}, (err, user) => {
         if (err) return res.status(500).send("There was a problem finding the user.");
 
-        Budget.deleteOne(req.params.id, (err, budget) => {
+        Budget.deleteOne({_id: req.params.id}, (err, budget) => {
+            if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the budget."});
+            res.status(200).json({status: "success", message: "Budget successfully deleted."});
+        });
+    });
+});
+
+// DELETES A BUDGET FROM THE DATABASE --> BY USER ID
+router.delete('/user/:id', VerifyToken, (req, res) => {
+    User.findById(req.userId, {password: 0}, (err, user) => {
+        if (err) return res.status(500).send("There was a problem finding the user.");
+
+        Budget.deleteOne({uid: req.params.id}, (err, budget) => {
             if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the budget."});
             res.status(200).json({status: "success", message: "Budget successfully deleted."});
         });

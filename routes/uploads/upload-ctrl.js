@@ -79,11 +79,24 @@ router.put('/:id', VerifyToken, (req, res) => {
     });
 });
 
+// DELETE BY UPLOAD ID
 router.delete('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, {password: 0}, (err, user) => {
         if (err) return res.status(500).send("There was a problem finding the user.");
 
-        Upload.deleteOne(req.param.id, (err)=>{
+        Upload.deleteOne({_id: req.params.id}, (err)=>{
+            if (err) return res.status(500).json({status: "failure", message: "No upload found."});
+            return res.status(500).json({status: "success", message: "Upload successfully deleted."});
+        });
+    });
+});
+
+// DELETE BY UPLOAD USER ID
+router.delete('/user/:id', VerifyToken, (req, res) => {
+    User.findById(req.userId, {password: 0}, (err, user) => {
+        if (err) return res.status(500).send("There was a problem finding the user.");
+
+        Upload.deleteOne({uid: req.params.id}, (err)=>{
             if (err) return res.status(500).json({status: "failure", message: "No upload found."});
             return res.status(500).json({status: "success", message: "Upload successfully deleted."});
         });

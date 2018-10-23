@@ -91,12 +91,25 @@ router.put('/:id', VerifyToken, (req, res) => {
     });
 });
 
-// DELETES A FIELD FROM THE DATABASE
+// DELETES A FIELD FROM THE DATABASE --> BY FIELD ID
 router.delete('/:id', VerifyToken, (req, res) => {
     User.findById(req.userId, {password: 0}, (err, user) => {
         if (err) return res.status(500).send("There was a problem finding the user.");
 
-        Field.deleteOne(req.params.id, (err, field) => {
+        Field.deleteOne({_id: req.params.id}, (err, field) => {
+            if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the field."});
+            if (!field) return res.status(404).send({status: "failure", message: "No field found."});
+            res.status(200).json({status: "success", message: "Field successfully deleted."});
+        });
+    });
+});
+
+// DELETES A FIELD FROM THE DATABASE --> BY USER ID
+router.delete('/user/:id', VerifyToken, (req, res) => {
+    User.findById(req.userId, {password: 0}, (err, user) => {
+        if (err) return res.status(500).send("There was a problem finding the user.");
+
+        Field.deleteOne({uid: req.params.id}, (err, field) => {
             if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the field."});
             if (!field) return res.status(404).send({status: "failure", message: "No field found."});
             res.status(200).json({status: "success", message: "Field successfully deleted."});
