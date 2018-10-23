@@ -24,8 +24,8 @@ router.post('/', VerifyToken, (req, res) => {
             req.body.tasks = taskIds;
             req.body.totalBudget = fieldBudget;
             req.body.location = {
-                longitude: req.body.long,
-                latitude: req.body.lat,
+                longitude: req.body.longitude,
+                latitude: req.body.latitude,
                 country: req.body.country,
                 state: req.body.state,
                 town: req.body.town,

@@ -16,6 +16,7 @@ const FieldSchema = new Schema({
     },
     plantName: String,
     fieldSize: Number,
+    fieldName: String,
     location: {
         longitude: Number,
         latitude: Number,
