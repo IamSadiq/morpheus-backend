@@ -8,15 +8,15 @@ const VerifyToken = require('../auth/VerifyToken');
 // CREATES A NEW USER
 router.post('/', (req, res) => {
     req.body.password = bcrypt.hashSync(req.body.password, 8);
-    User.find({email: req.body.email}, {password: 0}, (err, sess_user) => {
-        if (sess_user[0]) return res.status(500).send({status: "failure", reason: "User already exists."});
+    User.find({username: req.body.username}, {password: 0}, (err, sess_user) => {
+        if (sess_user[0]) return res.status(500).send({status: "failure", message: "Username is taken."});
 
         if (!sess_user[0]){
-            var token = jwt.sign({ id: req.body.email }, "jesuismorpheus", {});
+            var token = jwt.sign({ id: req.body.password }, "jesuismorpheus");
             req.body.apiKey = token;
             
             User.create(req.body, (err, user) => {
-                if (err) return res.status(500).send({status: "failure", reason: "There was a problem adding the information to the database."});
+                if (err) return res.status(500).send({status: "failure", message: "There was a problem adding the information to the database."});
                 res.status(200).send({ status: 'success', user: user });
             });
         }
@@ -29,7 +29,7 @@ router.get('/', VerifyToken, (req, res) => {
         if (err) return res.status(500).send("There was a problem finding the user.");
 
         User.find({}, {password: 0, apiKey: 0}, (err, users) => {
-            if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the users."});
+            if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the users."});
             return res.status(200).send(users);
         });
     });
@@ -41,7 +41,7 @@ router.get('/:id', VerifyToken, (req, res) => {
         if (err) return res.status(500).send("There was a problem finding the user.");
 
         User.findById(req.params.id, (err, user) => {
-            if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the user."});
+            if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the user."});
             return res.status(200).send(user);
         });
     });
@@ -67,7 +67,7 @@ router.delete('/:id', VerifyToken, (req, res) => {
         if (err) return res.status(500).send("There was a problem finding the user.");
 
         User.deleteOne({_id: req.params.id}, (err, user) => {
-            if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the user."});
+            if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the user."});
             return res.status(200).json({status: "success", message: "User successfully deleted."});
         });
     });
@@ -79,8 +79,8 @@ router.delete('/', VerifyToken, (req, res) => {
         if (err) return res.status(500).send("There was a problem finding the user.");
 
         User.deleteMany({}, (err, user) => {
-            if (err) return res.status(500).send({status: "failure", reason: "There was a problem finding the user."});
-            return res.status(200).json({status: "success", message: "User successfully deleted."});
+            if (err) return res.status(500).send({status: "failure", message: "There was a problem finding the user."});
+            return res.status(200).json({status: "success", message: "Users successfully deleted."});
         });
     });
 });

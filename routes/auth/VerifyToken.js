@@ -14,7 +14,7 @@ function verifyToken(req, res, next) {
             // if everything good, save to request for use in other routes
             req.userId = user._id;
             next();
-          });
+        });
     });
 
     // req.userId = "5bcc69f0aea1775e24c64b29";
