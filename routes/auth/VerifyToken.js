@@ -8,7 +8,7 @@ function verifyToken(req, res, next) {
     jwt.verify(token, "jesuismorpheus", function(err, decoded) {
         if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate apiKey.' });
         
-        User.find({apiKey: token}, (err, user) =>{
+        User.find({apiKey: token, _id: decoded._id}, (err, user) =>{
             if (err) return res.status(500).send({ status: "failure", auth: false, message: 'Failed to find user attachment to apiKey.' });
             
             // if everything good, save to request for use in other routes
